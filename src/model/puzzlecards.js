@@ -1,4 +1,5 @@
 import request from '../util/request'; 
+import {message} from 'antd';
 
 const delay = (millisecond) => {
   return new Promise((resolve) => {
@@ -31,16 +32,21 @@ export default {
 
   effects: {
     *queryInitCards(_, sagaEffects) {
-      const { call, put } = sagaEffects;
-      const endPointURI = 'http://www.jxmeetyou.com/get_goods?filter=-1';
+      try{
+        const { call, put } = sagaEffects;
+        const endPointURI = '/dev/random_joke';
 
-      const puzzle = yield call(request, endPointURI);
-      yield put({ type: 'addNewCard', payload: puzzle });
+        const puzzle = yield call(request, endPointURI);
+        yield put({ type: 'addNewCard', payload: puzzle });
 
-      yield call(delay, 3000);
+        yield call(delay, 3000);
 
-      const puzzle2 = yield call(request, endPointURI);
-      yield put({ type: 'addNewCard', payload: puzzle2 });
+        const puzzle2 = yield call(request, endPointURI);
+        yield put({ type: 'addNewCard', payload: puzzle2 });
+      }
+      catch(e){
+        message.error('数据获取失败'); // 打印错误信息
+      }
     }
   },
 
@@ -49,12 +55,9 @@ export default {
       let nextCounter, newCardWithId, nextData;
       nextCounter = state.counter;
       nextData = state.data;
-      newCard[0].map((item)=>{
-        nextCounter = nextCounter + 1;
-        newCardWithId = {...item, id: nextCounter};
-        nextData = nextData.concat(newCardWithId);
-      })
-      
+      nextCounter = nextCounter + 1;
+      newCardWithId = {...newCard, id: nextCounter};
+      nextData = nextData.concat(newCardWithId);
       return {
         data:nextData,
         counter:nextCounter

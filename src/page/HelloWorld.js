@@ -10,6 +10,14 @@ export default ()=>{
         border: '1px solid #e8e8e8',
     };
 
+    
+    const test =() => {
+        const s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.src = 'https://cdn.bootcss.com/jquery/3.2.0/jquery.slim.min.js';
+        document.body.appendChild(s)   
+    }
+
     return (
         <div>
             <Card style ={style} actions={[<a>操作一</a>,<a>操作二</a>]}>
